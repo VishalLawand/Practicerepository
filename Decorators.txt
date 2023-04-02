@@ -1,0 +1,117 @@
+Decorators are used to extend the functionality of code without changing it structure.
+Decorators allow us to wrap another function in order to extend the behaviour of the wrapped function, without permanently modifying it. 
+
+
+First Class Objects
+In Python, functions are first class objects which means that functions in Python can be used or passed as arguments.
+Properties of first class object:
+A function is an instance of the Object type.
+You can store the function in a variable.
+You can pass the function as a parameter to another function.
+You can return the function from a function.
+You can store them in data structures such as hash tables, lists, …
+
+*******************************
+def outer(f1):
+	def inner():
+		print('*'*10)
+		f1()
+		print('/'*10)
+	return inner
+def m1():
+	print('Hello')
+m1 = outer(m1)
+m1()
+********************************
+def smart_div(f1):
+	def inner(a, b):
+		if b == 0:
+			return 'Can\'t divide'
+		else:
+			return f1(a, b)
+
+	return inner
+
+def div(a, b):
+	result = a/b
+	return result
+div = smart_div(div)
+print(div(10, 2))
+
+**************************************
+CLASS DECORATOR
+We have seen that decorators are callable that accepts and returns a callable. Since classes
+are callable, decorators are also used to decorate classes. Before we see class decorators, we should
+know one fact that objects are callable using __call__ method.
+Python has a set of built-in methods and __call__ is one of them. The __call__ method
+enables a programmer to write classes where the instances behave like functions and can be called
+like a function. E.g.
+class Example:
+ def __init__(self):
+ print("Instance Created")
+ def __call__(self):
+ print("Instance is called via special method")
+e = Example()
+e() # __call__ method will be called automatically
+OUTPUT :
+Instance Created
+Instance is called via special method
+Now we will see how to decorate with class
+class MyDecorator:
+ def __init__(self, func):
+ self.func = func #self.func = m1
+
+ def __call__(self):
+ print("Before calling actual function")
+ self.func() #m1()
+ print("After calling actual function")
+
+@MyDecorator
+def m1():
+ print("m1 function")
+m1()
+OUTPUT:
+
+**************************************
+class A:
+    def __init__(self, fun):
+        self.fun = fun
+    def __call__(self):
+        print('Hello')
+        self.fun()
+@A
+def m1():
+    print('llllllllll')
+m1()
+
+
+*********************************************
+def outer1(fun):
+    
+    def inner1():
+        print('*'*10)
+        fun()
+        print('*'*10)
+    return inner1
+
+
+def outer2(fun):
+    print('outer2')
+    def inner2():
+        print('@'*10)
+        print(fun())
+        
+        print('@'*10)
+    return inner2
+
+@outer1
+@outer2
+def m1():
+    return('Hello, World !!')
+##m1 = outer2(m1)
+##m1 = outer1(m1)
+m1()
+*************************************
+
+
+
